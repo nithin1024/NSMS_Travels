@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Secure Payment | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/hotel.png') center center / cover no-repeat fixed;
+      color: #fff;
+      padding-bottom: 3rem;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .payment-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    .payment-container h2 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+
+    .payment-method {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .payment-method h3 {
+      font-size: 1.3rem;
+      margin-top: 0;
+      margin-bottom: 0.8rem;
+    }
+
+    .payment-method p {
+      margin-bottom: 0.5rem;
+    }
+
+    .payment-method button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    .payment-method button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 2rem;
+      color: #ccc;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="payment-container">
+    <h2>Secure Payment</h2>
+    <div class="payment-method">
+      <h3>Credit Card</h3>
+      <p>Enter your credit card details below:</p>
+      <form>
+        <input type="text" placeholder="Card Number" 
+       pattern="^\d{16}$" 
+       title="Enter a valid 16-digit card number" 
+       style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px; border: 1px solid #ccc; color: #333;">
+
+        <input type="text" placeholder="Expiry Date (MM/YY)" 
+       pattern="^(0[1-9]|1[0-2])\/\d{2}$" 
+       title="Enter a valid expiry date (MM/YY)" 
+       style="width: 48%; padding: 0.5rem; margin-right: 4%; margin-bottom: 0.5rem; border-radius: 4px; border: 1px solid #ccc; color: #333; display: inline-block;">
+        <input type="text" placeholder="CVV" 
+       pattern="^\d{3}$" 
+       title="Enter a valid 3-digit CVV" 
+       style="width: 48%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px; border: 1px solid #ccc; color: #333; display: inline-block;" required>
+
+<button type="submit" style="padding: 0.5rem 2rem; background-color: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1.2rem; font-weight: bold;">Pay with Credit Card</button>
+
+      </form>
+    </div>
+
+    <div class="payment-method">
+      <h3>PayPal</h3>
+      <p>You will be redirected to PayPal to complete your payment securely.</p>
+      <button onclick="alert('Redirecting to PayPal (Simulated)')">Pay with PayPal</button>
+    </div>
+
+    <div class="payment-method">
+      <h3>Net Banking</h3>
+      <p>Select your bank:</p>
+      <select style="width: 100%; padding: 0.5rem; margin-bottom: 0.5rem; border-radius: 4px; border: 1px solid #ccc; color: #333;">
+        <option value="">-- Select Bank --</option>
+        <option value="sbi">State Bank of India</option>
+        <option value="icici">ICICI Bank</option>
+        <option value="hdfc">HDFC Bank</option>
+      </select>
+      <button onclick="alert('Processing Net Banking (Simulated)')">Pay with Net Banking</button>
+    </div>
+
+    <div id="backToDetailsLink">
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type');
+    const backToDetailsDiv = document.getElementById('backToDetailsLink');
+
+    let backLink = '';
+    if (type === 'hotel') {
+      backLink = `<a href="hotel-details.html${window.location.search.replace('&type=hotel', '')}" class="back-link">Back to Hotel Details</a>`;
+    } else if (type === 'flight') {
+      backLink = `<a href="flights-details.html${window.location.search.replace('&type=flight', '')}" class="back-link">Back to Flight Details</a>`;
+    } else {
+      backLink = `<a href="NSMS.html" class="back-link">Back to Home</a>`; // Default fallback
+    }
+
+    backToDetailsDiv.innerHTML = backLink;
+  </script>
+</body>
+</html>

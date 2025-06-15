@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NSMS Travels - Services</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="header">
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav class="navbar">
+      <a href="NSMS.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="login.html" class="nav-link">Login</a>
+      <a href="signup.html" class="nav-link">Signup</a>
+    </nav>
+  </header>
+
+  <!-- Main Page Wrapper -->
+  <main class="page-content">
+    <!-- Services Section -->
+    <section class="services">
+      <div class="service-option">
+        <h3>Hotels</h3>
+        <p>Find the perfect hotel for your stay, anywhere in the world. Book now!</p>
+        <a onclick="handleBooking('hotels.html')" class="btn">Book Now</a>
+      </div>
+      <div class="service-option">
+        <h3>Flights</h3>
+        <p>Find and book flights to your dream destination at the best prices.</p>
+        <a onclick="handleBooking('flights.html')" class="btn">Book Now</a>
+      </div>
+      <div class="service-option">
+        <h3>Cars</h3>
+        <p>Rent a car for your journey and explore your destination in style.</p>
+        <a onclick="handleBooking('cars.html')" class="btn">Book Now</a>
+      </div>
+      <div class="service-option">
+        <h3>Buses</h3>
+        <p>Comfortable bus services for your travel across cities.</p>
+        <a onclick="handleBooking('buses.html')" class="btn">Book Now</a>
+      </div>
+      <div class="service-option">
+        <h3>Trains</h3>
+        <p>Travel by train for a scenic and relaxing journey.</p>
+        <a onclick="handleBooking('trains.html')" class="btn">Book Now</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    function handleBooking(page) {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (isLoggedIn === 'true') {
+        window.location.href = page;
+      } else {
+        alert("Please log in to continue booking.");
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</body>
+</html>

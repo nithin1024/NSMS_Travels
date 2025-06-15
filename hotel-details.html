@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hotel Details | NSMS Travels</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            background: url('images/hotel.png') center center / cover no-repeat fixed;
+            color: #fff;
+            padding-bottom: 3rem;
+        }
+
+        header {
+            background-color: rgba(30, 61, 89, 0.95);
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            margin-left: 1rem;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+        }
+
+        .details-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .details-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .image-gallery img {
+            max-height: 200px;
+            border-radius: 8px;
+        }
+
+        .hotel-info p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .booking-details, .payment-details, .guest-details {
+            margin-top: 1.5rem;
+            border-top: 1px solid #eee;
+            padding-top: 1.5rem;
+        }
+
+        .booking-details h3, .payment-details h3, .guest-details h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .booking-details p, .payment-details p, .guest-details p {
+            margin-bottom: 0.7rem;
+        }
+
+        .payment-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .payment-button:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 3rem;
+            background-color: rgba(30, 61, 89, 0.95);
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+        <nav>
+            <a href="NSMS.html">Home</a>
+            <a href="services.html">Services</a>
+        </nav>
+    </header>
+
+    <div class="details-container" id="hotelDetails"></div>
+
+    <footer>
+        &copy; 2025 NSMS Travels | All Rights Reserved
+    </footer>
+
+    <script>
+        const hotelDetailsDiv = document.getElementById('hotelDetails');
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        const desc = urlParams.get('desc');
+        const price = parseFloat(urlParams.get('price'));
+        const rating = urlParams.get('rating');
+        const images = JSON.parse(urlParams.get('images'));
+        const destination = urlParams.get('destination');
+        const checkin = urlParams.get('checkin');
+        const checkout = urlParams.get('checkout');
+        const guests = parseInt(urlParams.get('guests'));
+        const totalPrice = parseFloat(urlParams.get('totalPrice'));
+        const guestDataString = localStorage.getItem('hotelGuestData');
+        const guestData = guestDataString ? JSON.parse(guestDataString) : [];
+
+        if (name && desc && !isNaN(price) && rating && images && destination && checkin && checkout && !isNaN(guests) && !isNaN(totalPrice)) {
+            let guestDetailsHTML = '';
+            if (guestData && guestData.length > 0) {
+                guestDetailsHTML = `
+                    <div class="guest-details">
+                        <h3>Guest Details</h3>
+                        ${guestData.map((guest, index) => `
+                            <p>Guest ${index + 1}: Name - ${guest.name || 'N/A'}, Age - ${guest.age || 'N/A'}</p>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            hotelDetailsDiv.innerHTML = `
+                <h2>${name}</h2>
+                <div class="image-gallery">
+                    ${images.map(img => `<img src="${img}" alt="${name}">`).join('')}
+                </div>
+                <div class="hotel-info">
+                    <p>${desc}</p>
+                    <p>⭐ Rating: ${rating}/5</p>
+                    <p>Price per night: $${price.toFixed(2)}</p>
+                </div>
+                <div class="booking-details">
+                    <h3>Booking Details</h3>
+                    <p>Destination: ${destination}</p>
+                    <p>Check-in Date: ${checkin}</p>
+                    <p>Check-out Date: ${checkout}</p>
+                    <p>Number of Guests: ${guests}</p>
+                    <p>Total Estimated Price: $${totalPrice.toFixed(2)}</p>
+                </div>
+                ${guestDetailsHTML}
+                <div class="payment-details">
+                    <h3>Payment Details</h3>
+                    <p>We accept all major credit cards and PayPal.</p>
+                    <button class="payment-button" id="proceedToPayment">Proceed to Secure Payment</button>
+                </div>
+            `;
+
+            document.getElementById('proceedToPayment').addEventListener('click', () => {
+                window.location.href = 'payments.html';
+            });
+
+        } else {
+            hotelDetailsDiv.innerHTML = '<p class="error">Could not load hotel details.</p>';
+        }
+    </script>
+</body>
+</html>

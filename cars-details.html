@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Details | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/car.png') center center / cover no-repeat fixed;
+      color: #fff;
+      padding-bottom: 3rem;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .details-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .details-container h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .car-info p, .booking-person-info p {
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .booking-person-info {
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+
+    .rental-options {
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .rental-options label {
+      font-weight: bold;
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    .rental-options input[type="date"] {
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      width: 100%;
+      color: #333;
+    }
+
+    .payment-details {
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1.5rem;
+    }
+
+    .payment-details p.total-price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .payment-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-decoration: none;
+      width: fit-content;
+    }
+
+    .payment-button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 2rem;
+      color: #ccc;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="details-container" id="carDetails">
+    <!-- Dynamic content inserted here -->
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const carDetailsDiv = document.getElementById('carDetails');
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const model = urlParams.get('model');
+    const type = urlParams.get('type');
+    const pricePerDay = parseFloat(urlParams.get('price')?.replace('₹', '')?.replace('/day', ''));
+    const rating = urlParams.get('rating');
+    const pickupLocation = urlParams.get('pickupLocation');
+    const pickupDateParam = urlParams.get('pickupDate');
+    const passengers = urlParams.get('passengers');
+
+    const bookingPerson = JSON.parse(localStorage.getItem('carBookingPerson'));
+
+    if (model && type && !isNaN(pricePerDay) && rating && pickupLocation && pickupDateParam && passengers && bookingPerson) {
+      carDetailsDiv.innerHTML = `
+        <h2>${model} (${type})</h2>
+        <div class="car-info">
+          <p><b>Pickup Location:</b> ${pickupLocation}</p>
+          <p><b>Pickup Date:</b> ${pickupDateParam}</p>
+          <p><b>Passengers:</b> ${passengers}</p>
+          <p>⭐ <b>Rating:</b> ${rating}/5</p>
+          <p>💰 <b>Price per day:</b> ₹${pricePerDay.toFixed(2)}</p>
+        </div>
+
+        <div class="booking-person-info">
+          <h3>Booking Person Details</h3>
+          <p><b>Name:</b> ${bookingPerson.name}</p>
+          <p><b>Email:</b> ${bookingPerson.email}</p>
+          <p><b>Phone:</b> ${bookingPerson.phone || 'N/A'}</p>
+        </div>
+
+        <div class="rental-options">
+          <label for="pickupDate">Pickup Date:</label>
+          <input type="date" id="pickupDate" value="${pickupDateParam}">
+
+          <label for="dropoffDate">Drop-off Date:</label>
+          <input type="date" id="dropoffDate">
+        </div>
+
+        <div class="payment-details">
+          <h3>Rental Details & Payment</h3>
+          <p><b>Total Days:</b> <span id="daysCount">1</span></p>
+          <p class="total-price"><b>Total Estimated Price:</b> <span id="totalPrice">₹${pricePerDay.toFixed(2)}</span></p>
+          <button class="payment-button" id="proceedToPayment">Proceed to Secure Payment</button>
+        </div>
+
+        <a href="cars-results.html?pickupLocation=${encodeURIComponent(pickupLocation)}&dropoffLocation=&pickupDate=${encodeURIComponent(pickupDateParam)}&dropoffDate=&passengers=${encodeURIComponent(passengers)}" class="back-link">Back to Car Rental Results</a>
+      `;
+
+      const pickupDate = document.getElementById('pickupDate');
+      const dropoffDate = document.getElementById('dropoffDate');
+      const totalPriceSpan = document.getElementById('totalPrice');
+      const daysCountSpan = document.getElementById('daysCount');
+      const proceedBtn = document.getElementById('proceedToPayment');
+
+      function updatePrice() {
+        const start = new Date(pickupDate.value);
+        const end = new Date(dropoffDate.value);
+        const msPerDay = 1000 * 60 * 60 * 24;
+
+        if (pickupDate.value && dropoffDate.value && end >= start) {
+          const dayCount = Math.max(1, Math.ceil((end - start) / msPerDay));
+          const total = pricePerDay * dayCount;
+          totalPriceSpan.textContent = `₹${total.toFixed(2)}`;
+          daysCountSpan.textContent = dayCount;
+        } else {
+          totalPriceSpan.textContent = `₹${pricePerDay.toFixed(2)}`;
+          daysCountSpan.textContent = '1';
+        }
+      }
+
+      pickupDate.addEventListener('change', updatePrice);
+      dropoffDate.addEventListener('change', updatePrice);
+
+      proceedBtn.addEventListener('click', () => {
+        const start = new Date(pickupDate.value);
+        const end = new Date(dropoffDate.value);
+
+        if (!pickupDate.value || !dropoffDate.value) {
+          alert('Please select both pickup and drop-off dates.');
+          return;
+        }
+
+        if (end < start) {
+          alert('Drop-off date must be after pickup date.');
+          return;
+        }
+
+        const days = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+        const total = pricePerDay * days;
+
+        window.location.href = `payments.html?model=${encodeURIComponent(model)}&type=car&days=${days}&total=${total.toFixed(2)}`;
+      });
+
+    } else {
+      carDetailsDiv.innerHTML = '<p class="error">Could not load car or person details. Please go back and complete the form.</p>';
+    }
+  </script>
+</body>
+</html>

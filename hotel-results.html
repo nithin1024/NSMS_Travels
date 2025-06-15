@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hotel Results | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/hotel.png') center center / cover no-repeat fixed;
+      color: #fff;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .results-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .results-container h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hotel-card {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    .hotel-info {
+      padding: 1rem;
+      color: white;
+      position: relative;
+    }
+
+    .hotel-info h3 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+
+    .hotel-info p {
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="results-container" id="resultsBox">
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const destination = params.get('destination');
+    const checkin = params.get('checkin');
+    const checkout = params.get('checkout');
+    const guests = params.get('guests');
+
+    // Validate date input
+    if (new Date(checkin) > new Date(checkout)) {
+      alert("Invalid date selection! Check-in date cannot be after check-out date.");
+      window.location.href = 'book-hotel.html'; // Redirect to booking page
+    }
+
+    const hotelList = [
+      {
+        name: 'Grand Palace Hotel',
+        desc: `Experience 5-star luxury right in the heart of ${destination}.`,
+        price: 180, // Price as a number
+        rating: '4.7',
+        images: [
+          'images/hotel1.png',
+          'images/hotel2.png',
+          'images/hotel3.png'
+        ]
+      },
+      {
+        name: 'Seaside Resort',
+        desc: `Enjoy beachside views and comfort near ${destination}.`,
+        price: 150,
+        rating: '4.5',
+        images: [
+          'images/hotel4.png',
+          'images/hotel5.png',
+          'images/hotel6.png'
+        ]
+      },
+      {
+        name: 'Budget Inn Express',
+        desc: `Affordable and cozy stay close to central ${destination}.`,
+        price: 85,
+        rating: '4.0',
+        images: [
+          'images/hotel7.png',
+          'images/hotel8.png',
+          'images/hotel9.png'
+        ]
+      },
+      {
+        name: 'Skyline Suites',
+        desc: `Modern interiors with a skyline view in ${destination}.`,
+        price: 140,
+        rating: '4.3',
+        images: [
+          'images/hotel10.png',
+          'images/hotel1.png',
+          'images/hotel3.png'
+        ]
+      },
+      {
+        name: 'Hilltop Heritage Hotel',
+        desc: `Stay amidst nature and peace, yet close to ${destination}.`,
+        price: 160,
+        rating: '4.6',
+        images: [
+          'images/hotel1.png',
+          'images/hotel11.png',
+          'images/hotel3.png'
+        ]
+      },
+      {
+        name: 'City Center Comforts',
+        desc: `Prime location with easy access to all of ${destination}.`,
+        price: 130,
+        rating: '4.4',
+        images: [
+          'images/hotel4.png',
+          'images/hotel5.png',
+          'images/hotel6.png'
+        ]
+      },
+      {
+        name: 'Royal View Residency',
+        desc: `Elegant rooms and royal service in the heart of ${destination}.`,
+        price: 170,
+        rating: '4.8',
+        images: [
+          'images/hotel4.png',
+          'images/hotel5.png',
+          'images/hotel6.png'
+        ]
+      }
+    ];
+
+    const resultsBox = document.getElementById('resultsBox');
+    resultsBox.innerHTML = `<h2>Hotels in ${destination}</h2>`;
+
+    const calculateTotalPrice = (pricePerNight, checkinDate, checkoutDate) => {
+      const start = new Date(checkinDate);
+      const end = new Date(checkoutDate);
+      const timeDifference = end.getTime() - start.getTime();
+      const numberOfNights = Math.ceil(timeDifference / (1000 * 3600 * 24));
+      return pricePerNight * numberOfNights;
+    };
+
+    hotelList.forEach((hotel, index) => {
+      const totalPrice = calculateTotalPrice(hotel.price, checkin, checkout);
+      const hotelCard = document.createElement('div');
+      hotelCard.classList.add('hotel-card');
+      hotelCard.innerHTML = `
+        <div class="hotel-info">
+          <h3>${hotel.name}</h3>
+          <p>${hotel.desc}</p>
+          <p>⭐ ${hotel.rating}/5 | 💲 From $${hotel.price}/night</p>
+        </div>
+      `;
+      hotelCard.addEventListener('click', () => {
+        const hotelDetailsURL = `hotel-details.html?name=${encodeURIComponent(hotel.name)}&desc=${encodeURIComponent(hotel.desc)}&price=${hotel.price}&rating=${hotel.rating}&images=${encodeURIComponent(JSON.stringify(hotel.images))}&destination=${encodeURIComponent(destination)}&checkin=${encodeURIComponent(checkin)}&checkout=${encodeURIComponent(checkout)}&guests=${encodeURIComponent(guests)}&totalPrice=${totalPrice}`;
+        window.location.href = hotelDetailsURL; // Open in the same page
+      });
+      resultsBox.appendChild(hotelCard);
+    });
+  </script>
+</body>
+</html>

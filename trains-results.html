@@ -1,0 +1,246 @@
+<!-- trains-results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Train Ticket Results | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/train.png') center center / cover no-repeat fixed;
+      color: #fff;
+    }
+    header {
+      background-color: rgba(89, 30, 73, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.8rem;
+    }
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+    .results-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .train-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .train-card:hover {
+      transform: translateY(-3px);
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(89, 30, 73, 0.95);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+  <div class="results-container" id="resultsBox"></div>
+  <footer>&copy; 2025 NSMS Travels | All Rights Reserved</footer>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get('from');
+    const to = params.get('to');
+    const date = params.get('date');
+    const passengers = params.get('passengers');
+    const passengerDetails = params.get('passengerDetails');
+
+    const trainList = [
+      { name: 'Shatabdi Express', departure: '08:00', arrival: '12:00', price: 500, class: 'AC Chair Car', capacity: 60 },
+      { name: 'Rajdhani Express', departure: '16:00', arrival: '06:00', price: 800, class: 'AC 2 Tier', capacity: 48 },
+      { name: 'Intercity Express', departure: '10:30', arrival: '15:30', price: 350, class: 'Sleeper', capacity: 72 },
+      { name: 'Duronto Express', departure: '22:00', arrival: '09:00', price: 700, class: 'AC 3 Tier', capacity: 64 },
+      { name: 'Local Passenger', departure: '07:00', arrival: '19:00', price: 150, class: 'General', capacity: 100 }
+    ];
+
+    const resultsBox = document.getElementById('resultsBox');
+    resultsBox.innerHTML = `<h2>Trains from ${from} to ${to} on ${date}</h2>`;
+
+    const filteredTrains = trainList.filter(train => train.capacity >= parseInt(passengers));
+
+    if (filteredTrains.length > 0) {
+      filteredTrains.forEach(train => {
+        const trainCard = document.createElement('div');
+        trainCard.classList.add('train-card');
+        trainCard.innerHTML = `
+          <h3>${train.name}</h3>
+          <p>Departure: ${train.departure} | Arrival: ${train.arrival}</p>
+          <p>Class: ${train.class} | Price: ₹${train.price}</p>
+          <p>Available Seats: ${train.capacity}</p>
+        `;
+
+        trainCard.addEventListener('click', () => {
+          try {
+            const passengerDetailsDecoded = JSON.parse(decodeURIComponent(passengerDetails));
+            localStorage.setItem('selectedTrain', JSON.stringify(train));
+            localStorage.setItem('trainBookingInfo', JSON.stringify({
+              from, to, date, passengers, passengerDetails: passengerDetailsDecoded
+            }));
+            window.location.href = 'train-details.html';
+          } catch (e) {
+            alert("Booking data is corrupted. Please start again.");
+            window.location.href = 'trains.html';
+          }
+        });
+
+        resultsBox.appendChild(trainCard);
+      });
+    } else {
+      resultsBox.innerHTML += `<p style="text-align: center; color: #ff6b6b;">No trains available with enough seats for ${passengers} passengers on ${date}</p>`;
+    }
+  </script>
+</body>
+</html>
+
+<!-- train-details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Train Details | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/train.png') center center / cover no-repeat fixed;
+      color: #fff;
+      padding-bottom: 3rem;
+    }
+    header {
+      background-color: rgba(89, 30, 73, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .details-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .details-container h2 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+    .payment-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      cursor: pointer;
+    }
+    .payment-button:hover {
+      background-color: #0056b3;
+    }
+    .back-link {
+      display: block;
+      margin-top: 2rem;
+      color: #ccc;
+      text-align: center;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      color: white;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(89, 30, 73, 0.95);
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+  <div class="details-container" id="trainDetails"></div>
+  <footer>&copy; 2025 NSMS Travels | All Rights Reserved</footer>
+  <script>
+    const container = document.getElementById('trainDetails');
+    const booking = JSON.parse(localStorage.getItem('trainBookingInfo'));
+    const train = JSON.parse(localStorage.getItem('selectedTrain'));
+
+    if (!booking || !train) {
+      container.innerHTML = '<p style="color:red; text-align:center;">Booking details missing. <a href="trains.html">Start again</a>.</p>';
+    } else {
+      const total = train.price * parseInt(booking.passengers);
+      container.innerHTML = `
+        <h2>${train.name} Booking Confirmation</h2>
+        <div class="train-info">
+          <p><b>From:</b> ${booking.from}</p>
+          <p><b>To:</b> ${booking.to}</p>
+          <p><b>Date:</b> ${booking.date}</p>
+          <p><b>Departure:</b> ${train.departure}</p>
+          <p><b>Arrival:</b> ${train.arrival}</p>
+          <p><b>Class:</b> ${train.class}</p>
+          <p><b>Passengers:</b> ${booking.passengers}</p>
+        </div>
+        <div class="booking-person-info">
+          <h3>Passenger Details</h3>
+          ${booking.passengerDetails.map((p, i) => `
+            <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 8px;">
+              <p><b>Passenger ${i+1}:</b> ${p.name}, ${p.age} yrs, Phone: ${p.phone}</p>
+            </div>
+          `).join('')}
+        </div>
+        <div class="payment-details">
+          <h3>Total Fare</h3>
+          <p><b>Fare per Passenger:</b> ₹${train.price}</p>
+          <p class="total-price"><b>Total Amount:</b> ₹${total.toFixed(2)}</p>
+          <button class="payment-button" onclick="localStorage.setItem('totalAmount', '${total.toFixed(2)}'); window.location.href='payments.html'">Proceed to Payment</button>
+        </div>
+        <a href="trains-results.html" class="back-link">Back to Search Results</a>
+      `;
+    }
+  </script>
+</body>
+</html>

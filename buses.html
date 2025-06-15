@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Buses | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/bus.png') center center / cover no-repeat fixed;
+      color: white;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .passenger-section {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      margin-top: 1.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.9);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Book a Bus</h2>
+    <form id="busForm">
+      <label for="from">From</label>
+      <input type="text" id="from" list="cities" required placeholder="Departure city">
+
+      <label for="to">To</label>
+      <input type="text" id="to" list="cities" required placeholder="Destination city">
+
+      <datalist id="cities">
+        <option value="New Delhi">
+        <option value="Mumbai">
+        <option value="Bangalore">
+        <option value="Hyderabad">
+        <option value="Chennai">
+        <option value="Kolkata">
+        <option value="Pune">
+        <option value="Ahmedabad">
+        <option value="Jaipur">
+        <option value="Lucknow">
+      </datalist>
+
+      <label for="date">Journey Date</label>
+      <input type="date" id="date" required>
+
+      <label for="passengers">Passengers</label>
+      <select id="passengers" required>
+        <option value="">Select</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+
+      <div id="passengerDetailsContainer"></div>
+
+      <button type="submit">Search Buses</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const dateInput = document.getElementById('date');
+    const today = new Date();
+    const twoMonthsLater = new Date();
+    twoMonthsLater.setMonth(today.getMonth() + 2);
+
+    dateInput.min = today.toISOString().split('T')[0];
+    dateInput.max = twoMonthsLater.toISOString().split('T')[0];
+
+    const passengersSelect = document.getElementById('passengers');
+    const passengerDetailsContainer = document.getElementById('passengerDetailsContainer');
+
+    passengersSelect.addEventListener('change', () => {
+      const count = parseInt(passengersSelect.value);
+      passengerDetailsContainer.innerHTML = '';
+
+      for (let i = 1; i <= count; i++) {
+        passengerDetailsContainer.innerHTML += `
+          <div class="passenger-section">
+            <h3>Passenger ${i}</h3>
+            <label for="name${i}">Name</label>
+            <input type="text" id="name${i}" required>
+
+            <label for="age${i}">Age</label>
+            <input type="number" id="age${i}" required>
+
+            <label for="gender${i}">Gender</label>
+            <select id="gender${i}" required>
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <label for="email${i}">Email</label>
+            <input type="email" id="email${i}" required>
+
+            <label for="phone${i}">Phone Number</label>
+            <input type="tel" id="phone${i}" required pattern="[0-9]{10}" placeholder="10-digit number">
+          </div>
+        `;
+      }
+    });
+
+    document.getElementById('busForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      if (from === to) {
+        alert('From and To locations cannot be the same.');
+          return;
+      }
+      const date = document.getElementById('date').value;
+      const passengers = parseInt(document.getElementById('passengers').value);
+
+      const passengerData = [];
+      for (let i = 1; i <= passengers; i++) {
+        passengerData.push({
+          name: document.getElementById(`name${i}`).value,
+          age: document.getElementById(`age${i}`).value,
+          gender: document.getElementById(`gender${i}`).value,
+          email: document.getElementById(`email${i}`).value,
+          phone: document.getElementById(`phone${i}`).value
+        });
+      }
+
+      localStorage.setItem('busPassengerData', JSON.stringify(passengerData));
+      const params = new URLSearchParams({ from, to, date, passengers });
+      window.location.href = 'bus-results.html?' + params.toString();
+    });
+  </script>
+</body>
+</html>

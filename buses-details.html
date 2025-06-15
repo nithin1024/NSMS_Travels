@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bus Ticket Details | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/bus.png') center center / cover no-repeat fixed;
+      color: #fff;
+      padding-bottom: 3rem;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .details-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .details-container h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .bus-info p {
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+    }
+
+    .booking-info {
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1.5rem;
+    }
+
+    .booking-info h3, .payment-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .booking-info p {
+      margin-bottom: 0.7rem;
+    }
+
+    .payment-details {
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1.5rem;
+    }
+
+    .payment-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      text-decoration: none;
+      width: fit-content;
+    }
+
+    .payment-button:hover {
+      background-color: #0056b3;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 2rem;
+      color: #ccc;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .back-link:hover {
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="details-container" id="busDetails">
+    <!-- Content will be inserted via JavaScript -->
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const busDetailsDiv = document.getElementById('busDetails');
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const operator = urlParams.get('operator');
+    const time = urlParams.get('time');
+    const priceStr = urlParams.get('price');
+    const rating = urlParams.get('rating');
+    const from = urlParams.get('from');
+    const to = urlParams.get('to');
+    const date = urlParams.get('date');
+    const passengersStr = urlParams.get('passengers');
+
+    const price = parseFloat(priceStr?.replace('₹', ''));
+    const passengers = parseInt(passengersStr);
+
+    const passengerDetails = JSON.parse(localStorage.getItem('busBookingPerson'));
+    const passengerList = JSON.parse(localStorage.getItem('busPassengerData'));
+    let totalPrice = !isNaN(price) && !isNaN(passengers) ? price * passengers : NaN;
+
+    if (
+      operator && time && !isNaN(price) && rating &&
+      from && to && date && !isNaN(passengers) &&
+      passengerDetails && passengerDetails.name && passengerDetails.email
+    ) {
+      let passengerHTML = '';
+      if (Array.isArray(passengerList) && passengerList.length > 0) {
+        passengerHTML = `
+          <div class="booking-info">
+            <h3>Passenger Details</h3>
+            ${passengerList.map((p, i) => `
+              <div style="margin-bottom: 1rem;">
+                <strong>Passenger ${i + 1}:</strong><br>
+                Name: ${p.name}<br>
+                Age: ${p.age}<br>
+                Gender: ${p.gender}<br>
+                Email: ${p.email}<br>
+                Phone: ${p.phone || 'N/A'}
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      busDetailsDiv.innerHTML = `
+        <h2>${operator}</h2>
+        <div class="bus-info">
+          <p><b>From:</b> ${from} | <b>To:</b> ${to}</p>
+          <p><b>Date:</b> ${date}</p>
+          <p>🚌 <b>Time:</b> ${time}</p>
+          <p>💺 <b>Passengers:</b> ${passengers}</p>
+          <p>⭐ <b>Rating:</b> ${rating}/5</p>
+          <p>💰 <b>Price per person:</b> ₹${price.toFixed(2)}</p>
+          <p>💰 <b>Total Estimated Price:</b> ₹${totalPrice.toFixed(2)}</p>
+        </div>
+
+        <div class="booking-info">
+          <h3>Primary Booker</h3>
+          <p><b>Name:</b> ${passengerDetails.name}</p>
+          <p><b>Email:</b> ${passengerDetails.email}</p>
+          <p><b>Phone:</b> ${passengerDetails.phone || 'N/A'}</p>
+        </div>
+
+        ${passengerHTML}
+
+        <div class="payment-details">
+          <h3>Payment</h3>
+          <p>Click below to proceed to secure payment.</p>
+          <button class="payment-button" id="proceedToPayment">Proceed to Secure Payment</button>
+        </div>
+
+        <a href="bus-results.html?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}&passengers=${encodeURIComponent(passengers)}" class="back-link">Back to Bus Results</a>
+      `;
+
+      document.getElementById('proceedToPayment').addEventListener('click', () => {
+        const queryString = `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}&passengers=${passengers}&operator=${encodeURIComponent(operator)}&price=${price}&type=bus&total=${totalPrice.toFixed(2)}`;
+        window.location.href = `payments.html${queryString}`;
+      });
+
+    } else {
+      busDetailsDiv.innerHTML = '<p class="error">Missing or invalid booking details. Please go back and fill the form again.</p>';
+    }
+  </script>
+</body>
+</html>

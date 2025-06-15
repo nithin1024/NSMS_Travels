@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup - NSMS Travels</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-image: url('images/background4.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+    }
+    .overlay {
+      background: rgba(0, 0, 0, 0.3);
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+    .form-container {
+      position: relative;
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      z-index: 2;
+    }
+    .form-container input,
+    .form-container button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: none;
+      font-size: 1rem;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .toggle-icon {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+    }
+    .form-container button {
+      background-color: #ff6600;
+      color: white;
+      cursor: pointer;
+    }
+    .form-container button:hover {
+      background-color: #e65c00;
+    }
+    .form-link {
+      color: #ff9900;
+      text-decoration: none;
+    }
+    .form-link:hover {
+      text-decoration: underline;
+    }
+    #errorMessage {
+      color: orange;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="form-container">
+    <h2>Signup</h2>
+    <input type="text" id="signupName" placeholder="Full Name" required>
+    <input type="email" id="signupEmail" placeholder="Email">
+    <input type="text" id="signupMobile" placeholder="Mobile Number" maxlength="10">
+    <div class="password-wrapper">
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <span class="toggle-icon" onclick="togglePassword('signupPassword', this)">👁️</span>
+    </div>
+    <button onclick="signup()">Signup</button>
+    <p><a href="login.html" class="form-link">Already have an account? Log in</a></p>
+    <div id="errorMessage">Please enter all fields correctly.<br>Password must be 8+ chars, include uppercase, lowercase, number & special char.</div>
+  </div>
+
+  <script>
+    function togglePassword(id, icon) {
+      const field = document.getElementById(id);
+      field.type = field.type === "password" ? "text" : "password";
+      icon.textContent = field.type === "password" ? "👁️" : "🙈";
+    }
+
+    function isValidPassword(password) {
+      const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      return pattern.test(password);
+    }
+
+    function isValidEmail(email) {
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return pattern.test(email);
+    }
+
+    function isValidMobile(mobile) {
+      const pattern = /^\d{10}$/;
+      return pattern.test(mobile);
+    }
+
+    function signup() {
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const mobile = document.getElementById("signupMobile").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const errorMessage = document.getElementById("errorMessage");
+
+      if (!name || (!email && !mobile) || !password || !isValidPassword(password)) {
+        errorMessage.style.display = 'block';
+        return;
+      }
+
+      if (email && !isValidEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      if (mobile && !isValidMobile(mobile)) {
+        alert("Please enter a valid 10-digit mobile number without any symbols or spaces.");
+        return;
+      }
+
+      const userData = { name, email, mobile, password };
+      localStorage.setItem("userData", JSON.stringify(userData));
+      localStorage.setItem("isLoggedIn", "true");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

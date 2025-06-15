@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flight Results | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/flight.png') center center / cover no-repeat fixed;
+      color: #fff;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .results-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .results-container h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .flight-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer;
+    }
+
+    .flight-card h3 {
+      margin: 0;
+    }
+
+    .flight-card p {
+      margin: 0.5rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="results-container" id="resultsBox">
+  </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get('from');
+    const to = params.get('to');
+    const departure = params.get('departure');
+    const passengers = params.get('passengers');
+
+    // New passenger detail fields
+    const name = params.get('name');
+    const age = params.get('age');
+    const gender = params.get('gender');
+    const email = params.get('email');
+
+    const flightList = [
+      {
+        airline: 'IndiGo',
+        time: '08:00 AM - 10:30 AM',
+        price: '₹4500',
+        rating: '4.5'
+      },
+      {
+        airline: 'Air India',
+        time: '11:00 AM - 01:45 PM',
+        price: '₹5200',
+        rating: '4.3'
+      },
+      {
+        airline: 'SpiceJet',
+        time: '03:15 PM - 05:30 PM',
+        price: '₹4800',
+        rating: '4.0'
+      },
+      {
+        airline: 'Vistara',
+        time: '06:00 PM - 08:20 PM',
+        price: '₹5600',
+        rating: '4.7'
+      },
+      {
+        airline: 'AirAsia',
+        time: '09:00 PM - 11:30 PM',
+        price: '₹4300',
+        rating: '4.2'
+      }
+    ];
+
+    const resultsBox = document.getElementById('resultsBox');
+    resultsBox.innerHTML = `<h2>Flights from ${from} to ${to} on ${departure}</h2>`;
+
+    flightList.forEach(flight => {
+      const flightCard = document.createElement('div');
+      flightCard.classList.add('flight-card');
+      flightCard.innerHTML = `
+        <h3>${flight.airline}</h3>
+        <p>🕒 ${flight.time}</p>
+        <p>💺 Passengers: ${passengers}</p>
+        <p>⭐ ${flight.rating}/5 | 💰 ${flight.price}</p>
+      `;
+
+      flightCard.addEventListener('click', () => {
+        const flightDetailsURL = `flights-details.html?airline=${encodeURIComponent(flight.airline)}&time=${encodeURIComponent(flight.time)}&price=${encodeURIComponent(flight.price)}&rating=${encodeURIComponent(flight.rating)}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&departure=${encodeURIComponent(departure)}&passengers=${encodeURIComponent(passengers)}&name=${encodeURIComponent(name)}&age=${encodeURIComponent(age)}&gender=${encodeURIComponent(gender)}&email=${encodeURIComponent(email)}`;
+        window.location.href = flightDetailsURL;
+      });
+
+      resultsBox.appendChild(flightCard);
+    });
+  </script>
+</body>
+</html>
+ 

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bus Results | NSMS Travels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: url('images/bus.png') center center / cover no-repeat fixed;
+      color: #fff;
+    }
+
+    header {
+      background-color: rgba(30, 61, 89, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
+
+    .results-container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .results-container h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .bus-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      cursor: pointer; /* Indicate it's clickable */
+    }
+
+    .bus-card h3 {
+      margin: 0;
+    }
+
+    .bus-card p {
+      margin: 0.5rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 3rem;
+      background-color: rgba(30, 61, 89, 0.95);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav>
+      <a href="NSMS.html">Home</a>
+      <a href="services.html">Services</a>
+    </nav>
+  </header>
+
+  <div class="results-container" id="resultsBox">
+    </div>
+
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get('from');
+    const to = params.get('to');
+    const date = params.get('date');
+    const passengers = params.get('passengers');
+
+    const busList = [
+      { operator: 'RedBus Travels', time: '07:00 AM - 01:00 PM', price: '₹800', rating: '4.2' },
+      { operator: 'GreenLine Express', time: '09:30 AM - 03:45 PM', price: '₹950', rating: '4.4' },
+      { operator: 'Blue Star', time: '01:00 PM - 07:00 PM', price: '₹780', rating: '4.1' },
+      { operator: 'SVR Travels', time: '05:00 PM - 11:30 PM', price: '₹870', rating: '4.3' },
+      { operator: 'Orange Tours', time: '10:00 PM - 05:00 AM', price: '₹1000', rating: '4.5' }
+    ];
+
+    const resultsBox = document.getElementById('resultsBox');
+    resultsBox.innerHTML = `<h2>Buses from ${from} to ${to} on ${date}</h2>`;
+
+    busList.forEach(bus => {
+      const busCard = document.createElement('div');
+      busCard.classList.add('bus-card');
+      busCard.innerHTML = `
+        <h3>${bus.operator}</h3>
+        <p>🚌 ${bus.time}</p>
+        <p>💺 Passengers: ${passengers}</p>
+        <p>⭐ ${bus.rating}/5 | 💰 ${bus.price}</p>
+      `;
+
+      busCard.addEventListener('click', () => {
+        window.location.href = `buses-details.html?operator=${encodeURIComponent(bus.operator)}&time=${encodeURIComponent(bus.time)}&price=${encodeURIComponent(bus.price)}&rating=${encodeURIComponent(bus.rating)}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}&passengers=${encodeURIComponent(passengers)}`;
+      });
+
+      resultsBox.appendChild(busCard);
+    });
+  </script>
+</body>
+</html>

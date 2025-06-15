@@ -1,0 +1,226 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body and Global Styles */
+body {
+  font-family: 'Playfair Display', serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header */
+.header {
+  background-color: transparent;
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  color: black;
+}
+
+.header .logo {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.navbar {
+  display: flex;
+}
+
+.nav-link {
+  margin: 0 10px;
+  font-size: 1rem;
+  color: black;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+  background-image: url('images/background3.jpg'); /* Your background image */
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: background-image 1s ease-in-out;
+}
+
+.hero .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+.hero .hero-content {
+  padding-top: 100px;
+  position: relative;
+  color: white;
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+}
+
+/* Align button to left */
+.button-container {
+  margin-top: 40px;
+  text-align: center;
+  width: 100%;
+  padding-left: 20px;
+}
+
+.brand-title {
+  font-size: 3.5rem;
+  background: linear-gradient(to right, #F5DEB3, #2ECC71);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Button */
+.btn {
+  padding: 12px 20px;
+  background-color: #2ecc71;
+  color: white;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #27ae60;
+  color: white;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  color: white;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Services Section */
+.services {
+  padding: 140px 20px 60px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns for the top icons */
+  gap: 30px;
+  flex: 1;
+  background-image: url('images/services.png'); /* Background image visible */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: calc(100vh - 100px);
+}
+
+/* Adjust layout for 3 icons on top and 2 on bottom */
+.services .service-option {
+  background-color: rgba(0, 0, 0, 0.4); /* Slight dark overlay */
+  padding: 20px;
+  height: 200px; /* Smaller height for smaller box */
+  width: 250px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.service-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.service-option h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.service-option p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+/* Update the grid layout for the specific arrangement */
+.services {
+  grid-template-columns: repeat(3, 1fr); /* For top three icons */
+  grid-template-rows: auto auto; /* Two rows (top and bottom) */
+  gap: 30px;
+}
+
+.service-option:nth-child(1),
+.service-option:nth-child(2),
+.service-option:nth-child(3) {
+  grid-row: 1; /* Top row */
+}
+
+.service-option:nth-child(4),
+.service-option:nth-child(5) {
+  grid-row: 2; /* Bottom row */
+}
+
+/* Button */
+.btn {
+  padding: 10px 18px;
+  background-color: #2ecc71;
+  color: white;
+  font-size: 1rem;
+  border-radius: 6px;
+  align-self: start;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #27ae60;
+  color: white;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  margin-top: auto;
+}

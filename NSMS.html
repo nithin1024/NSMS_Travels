@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NSMS Travels - Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .center-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      text-decoration: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="header">
+    <div class="logo">NSMS<span style="font-weight: 400;">Travels</span></div>
+    <nav class="navbar">
+      <a href="NSMS.html" class="nav-link">Home</a>
+      <a href="services.html" class="nav-link" id="services-link">Services</a>
+      <a href="login.html" class="nav-link">Login</a>
+      <a href="signup.html" class="nav-link">Signup</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="overlay"></div>
+    <div class="hero-content">
+      <h2 class="brand-title">NSMS Travels</h2>
+      <h1>Book Your Travel Services</h1>
+      <p>Explore Hotels, Flights, Cars, Buses, and Trains – Book All in One Place.</p>
+      <div class="button-container center-buttons" id="auth-buttons">
+        <a href="login.html" class="btn">Login</a>
+        <a href="signup.html" class="btn">Signup</a>
+      </div>
+      <div class="button-container" style="margin-top: 20px;">
+        <a href="services.html" class="btn" id="explore-btn">Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 NSMS Travels | All Rights Reserved
+  </footer>
+
+  <!-- JavaScript for login check and UI updates -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const authButtons = document.getElementById("auth-buttons");
+      const exploreBtn = document.getElementById("explore-btn");
+
+      // Hide Login/Signup buttons if logged in
+      if (isLoggedIn === "true") {
+        authButtons.classList.add("hidden");
+      }
+
+      // Redirect to login if not logged in when clicking Explore
+      exploreBtn.addEventListener("click", function (e) {
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+          e.preventDefault();
+          alert("Please log in to access the services.");
+          window.location.href = "login.html";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

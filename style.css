@@ -58,7 +58,7 @@ a {
 /* Hero Section */
 .hero {
   height: 100vh;
-  background-image: url('images/background3.jpg'); /* Your background image */
+  background-image: url('background3.jpg'); /* Your background image */
   background-size: cover;
   background-position: center;
   position: relative;
@@ -144,7 +144,7 @@ footer {
   grid-template-columns: repeat(3, 1fr); /* Three columns for the top icons */
   gap: 30px;
   flex: 1;
-  background-image: url('images/services.png'); /* Background image visible */
+  background-image: url('services.png'); /* Background image visible */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
